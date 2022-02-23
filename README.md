@@ -14,4 +14,4 @@ An address can be set at deployment. Whether this address is a multi-sig, a DAO 
 
 ### Learn more
 
-https://mirror.xyz/dashboard/edit/GEnHL-CCQcCN0J9UYhR3WM4_4_dvWvvUmOmPG1ya64Q
+https://mirror.xyz/shah256.eth/GEnHL-CCQcCN0J9UYhR3WM4_4_dvWvvUmOmPG1ya64Q
