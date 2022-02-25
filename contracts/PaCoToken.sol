@@ -87,13 +87,13 @@ contract PaCoToken is PaCoTokenEnumerable, BondTracker {
                 block.timestamp - liquidationStartedAt,
                 halfLife
             );
-            erc20ToUse.transferFrom(msg.sender, currentOwnerAddress, buyPrice);
+            require(erc20ToUse.transferFrom(msg.sender, currentOwnerAddress, buyPrice));
         } else {
-            erc20ToUse.transferFrom(
+            require(erc20ToUse.transferFrom(
                 msg.sender,
                 currentOwnerAddress,
                 currentOwnersBond.statedPrice
-            );
+            ));
         }
 
         _bondToBeReturnedToAddress[currentOwnerAddress] += bondRemaining;
@@ -169,11 +169,11 @@ contract PaCoToken is PaCoTokenEnumerable, BondTracker {
 
         feesToWithdraw += feesToReap;
         if (amountToTransfer > 0)
-            erc20ToUse.transferFrom(
+            require(erc20ToUse.transferFrom(
                 ownerOf(_tokenId),
                 address(this),
                 amountToTransfer
-            );
+            ));
     }
 
     function reapSafForTokenIds(uint256[] calldata tokenIds) external {
@@ -204,11 +204,11 @@ contract PaCoToken is PaCoTokenEnumerable, BondTracker {
     }
 
     function withdrawAccumulatedFunds() public {
-        erc20ToUse.transferFrom(
+        require(erc20ToUse.transferFrom(
             address(this),
             withdrawAddress,
             feesToWithdraw
-        );
+        ));
         feesToWithdraw = 0;
     }
 
@@ -273,11 +273,11 @@ contract PaCoToken is PaCoTokenEnumerable, BondTracker {
     }
 
     function withdrawBondRefund() external {
-        erc20ToUse.transferFrom(
+        require(erc20ToUse.transferFrom(
             address(this),
             msg.sender,
             _bondToBeReturnedToAddress[msg.sender]
-        );
+        ));
     }
 
     function viewBondRefund(address addr) external view returns (uint256) {
@@ -427,7 +427,7 @@ contract PaCoToken is PaCoTokenEnumerable, BondTracker {
         _owners[tokenId] = to;
         BondInfo storage bondInfoRef = _bondInfosAtLastCheckpoint[tokenId];
         _persistNewBondInfo(bondInfoRef, initialStatedPrice, bondAmount);
-        erc20ToUse.transferFrom(to, address(this), bondAmount);
+        require(erc20ToUse.transferFrom(to, address(this), bondAmount));
         emit Transfer(address(0), to, tokenId);
         emit NewPriceSet(to, tokenId, initialStatedPrice);
     }
@@ -628,7 +628,7 @@ contract PaCoToken is PaCoTokenEnumerable, BondTracker {
         BondInfo storage bondInfoRef = _bondInfosAtLastCheckpoint[tokenId];
 
         _persistNewBondInfo(bondInfoRef, newPrice, bondAmount);
-        erc20ToUse.transferFrom(payer, address(this), bondAmount);
+        require(erc20ToUse.transferFrom(payer, address(this), bondAmount));
         emit Transfer(from, to, tokenId);
         emit NewPriceSet(to, tokenId, newPrice);
     }

@@ -15,6 +15,6 @@ contract Treasury is Ownable {
         external
         onlyOwner
     {
-        erc20ToUse.transferFrom(address(this), recipient, amount);
+        require(erc20ToUse.transferFrom(address(this), recipient, amount));
     }
 }
